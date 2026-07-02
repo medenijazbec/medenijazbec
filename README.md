@@ -36,15 +36,10 @@ Code can be copied. Tools can be replaced. But the knowledge I build is mine for
 
 <br />
 
-## Current Local Time
+## Timezone
 
-<!--LOCAL_TIME_START-->
-<img src="https://img.shields.io/badge/Local%20Time-Updating...-111111?style=for-the-badge&logo=clockify&logoColor=white" />
-<br />
-<strong>Updating...</strong>
-<br />
-<sub>Europe/Ljubljana</sub>
-<!--LOCAL_TIME_END-->
+<img src="https://img.shields.io/badge/Timezone-Europe%2FLjubljana-111111?style=for-the-badge&logo=clockify&logoColor=white" />
+
 
 <br />
 <br />
