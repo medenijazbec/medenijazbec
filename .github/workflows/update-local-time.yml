@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Update README local time
         run: |
@@ -23,6 +23,7 @@ jobs:
           from zoneinfo import ZoneInfo
           from urllib.parse import quote
           import re
+          import sys
 
           readme_path = "README.md"
           timezone = "Europe/Ljubljana"
@@ -38,6 +39,8 @@ jobs:
           replacement = f"""<!--LOCAL_TIME_START-->
           <img src="https://img.shields.io/badge/Local%20Time-{badge_message}-111111?style=for-the-badge&logo=clockify&logoColor=white" />
           <br />
+          <strong>{time_text} {zone_text}</strong>
+          <br />
           <sub>Updated automatically · {date_text} · {timezone}</sub>
           <!--LOCAL_TIME_END-->"""
 
@@ -45,6 +48,11 @@ jobs:
               content = file.read()
 
           pattern = r"<!--LOCAL_TIME_START-->.*?<!--LOCAL_TIME_END-->"
+
+          if not re.search(pattern, content, flags=re.DOTALL):
+              print("ERROR: LOCAL_TIME markers not found in README.md", file=sys.stderr)
+              sys.exit(1)
+
           updated_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
 
           with open(readme_path, "w", encoding="utf-8") as file:
