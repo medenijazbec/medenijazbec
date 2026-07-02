@@ -38,7 +38,12 @@ Code can be copied. Tools can be replaced. But the knowledge I build is mine for
 
 ## Current Local Time
 
-<img src="https://img.shields.io/badge/Local%20Time-Europe%2FLjubljana-111111?style=for-the-badge&logo=clockify&logoColor=white" />
+<!--LOCAL_TIME_START-->
+
+<img src="https://img.shields.io/badge/Local%20Time-Updating...-111111?style=for-the-badge&logo=clockify&logoColor=white" />
+<br />
+<sub>Europe/Ljubljana</sub>
+<!--LOCAL_TIME_END-->
 
 <br />
 <br />
