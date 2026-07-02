@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: update-local-time
+  cancel-in-progress: false
+
 jobs:
   update-time:
     runs-on: ubuntu-latest
@@ -15,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Update README local time
         run: |
@@ -69,5 +75,6 @@ jobs:
           else
             git add README.md
             git commit -m "Update local time"
-            git push
+            git pull --rebase origin main
+            git push origin main
           fi
