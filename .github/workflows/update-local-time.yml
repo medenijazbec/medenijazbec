@@ -1,0 +1,65 @@
+name: Update local time
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-time:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Update README local time
+        run: |
+          python <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from urllib.parse import quote
+          import re
+
+          readme_path = "README.md"
+          timezone = "Europe/Ljubljana"
+
+          now = datetime.now(ZoneInfo(timezone))
+
+          time_text = now.strftime("%H:%M")
+          date_text = now.strftime("%d %b %Y")
+          zone_text = now.strftime("%Z")
+
+          badge_message = quote(f"{time_text} {zone_text}")
+
+          replacement = f"""<!--LOCAL_TIME_START-->
+          <img src="https://img.shields.io/badge/Local%20Time-{badge_message}-111111?style=for-the-badge&logo=clockify&logoColor=white" />
+          <br />
+          <sub>Updated automatically · {date_text} · {timezone}</sub>
+          <!--LOCAL_TIME_END-->"""
+
+          with open(readme_path, "r", encoding="utf-8") as file:
+              content = file.read()
+
+          pattern = r"<!--LOCAL_TIME_START-->.*?<!--LOCAL_TIME_END-->"
+          updated_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
+
+          with open(readme_path, "w", encoding="utf-8") as file:
+              file.write(updated_content)
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet; then
+            echo "No changes to commit."
+          else
+            git add README.md
+            git commit -m "Update local time"
+            git push
+          fi
